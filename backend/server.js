@@ -15,7 +15,7 @@ const db = mysql.createPool({
   host: "localhost",
   user: "root",
   password: "",
-  database: "milktea_db",
+  database: "inventory_db",
   waitForConnections: true,
   connectionLimit: 10
 });
