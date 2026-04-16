@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { apiFetch } from "../services/api";
 
 function Login() {
@@ -8,7 +8,11 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPass, setShowPass] = useState(false);
+  const themeColor = "#D50036";
   const navigate = useNavigate();
+  const location = useLocation();
+  const registered = location.state?.registered;
+  const registeredShop = location.state?.shopName;
 
   const login = async () => {
     if (!username || !password) return setError("Please fill in all fields.");
@@ -142,6 +146,12 @@ function Login() {
             </p>
           </div>
 
+          {registered && (
+            <div style={{ background: '#22cc7722', border: '1px solid #22cc7744', color: '#22cc77', padding: '12px 16px', borderRadius: '10px', fontSize: '13px', marginBottom: '20px' }}>
+              🎉 Shop <strong>{registeredShop}</strong> created! Sign in with your new account.
+            </div>
+          )}
+
           {error && (
             <div style={{
               background: "#ff4b4b18",
@@ -246,6 +256,10 @@ function Login() {
             borderTop: "1px solid #ffffff0f",
             textAlign: "center"
           }}>
+            <Link to="/register" style={{ color: themeColor, fontSize: '13px', textDecoration: 'none', fontWeight: '600' }}>
+              Create New Shop
+            </Link>
+            <span style={{ color: '#333', fontSize: '12px' }}> · </span>
             <a
               href="/superadmin"
               style={{ color: "#444466", fontSize: "12px", textDecoration: "none" }}
