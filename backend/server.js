@@ -160,12 +160,45 @@ app.get("/superadmin/shops/:id", auth(["superadmin"]), async (req, res) => {
   res.json({ shop: shop[0], users, ingredients });
 });
 
+// ─── REGISTER (Self-register — creates new shop) ─────────────────────────────
+app.post("/register", async (req, res) => {
+  const { shop_name, username, password, theme_color = "#D50036" } = req.body;
+  if (!shop_name || !username || !password)
+    return res.status(400).json({ message: "All fields are required." });
+
+  const conn = await db.getConnection();
+  try {
+    await conn.beginTransaction();
+    const [existing] = await conn.query("SELECT id FROM users WHERE username = ?", [username]);
+    if (existing.length) {
+      await conn.rollback();
+      return res.status(400).json({ message: "Username already taken." });
+    }
+    const [shopResult] = await conn.query(
+      "INSERT INTO shops (name, theme_color, logo_text) VALUES (?, ?, ?)",
+      [shop_name, theme_color, shop_name]
+    );
+    const hashed = await require("bcryptjs").hash(password, 10);
+    await conn.query(
+      "INSERT INTO users (username, password, role, shop_id) VALUES (?, ?, 'admin', ?)",
+      [username, hashed, shopResult.insertId]
+    );
+    await conn.commit();
+    res.json({ status: "registered" });
+  } catch (err) {
+    await conn.rollback();
+    res.status(500).json({ message: err.message });
+  } finally { conn.release(); }
+});
+
 // ─── SHOP SETUP (First Login Customization) ──────────────────────────────────
 
-// Get all available ingredient templates
+// ingredient-templates kept for compatibility (ingredients now embedded in frontend)
 app.get("/ingredient-templates", async (req, res) => {
-  const [data] = await db.query("SELECT * FROM ingredient_templates ORDER BY category, name");
-  res.json(data);
+  try {
+    const [data] = await db.query("SELECT * FROM ingredient_templates ORDER BY category, name");
+    res.json(data);
+  } catch { res.json([]); }
 });
 
 // Save shop customization (ingredients selection)

@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Setup from "./pages/Setup";
 import Dashboard from "./pages/Dashboard";
 import Inventory from "./pages/Inventory";
@@ -24,6 +25,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/superadmin" element={<SuperAdmin />} />
         <Route path="/setup" element={
           <PrivateRoute roles={["admin"]}>
