@@ -15,7 +15,7 @@ export default function Sales() {
     if(p.length) q+="?"+p.join("&");
     apiFetch(q).then(d=>setData(d||[]));
   };
-  useEffect(load,[]);
+  useEffect(() => { load(); }, []);
 
   const total = data.reduce((s,r)=>s+parseFloat(r.total||0),0);
   const di = {padding:"7px 11px",background:"#0D0D12",border:"1px solid #ffffff18",borderRadius:"7px",color:"#fff",fontSize:"12px",outline:"none"};

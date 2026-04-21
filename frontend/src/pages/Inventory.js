@@ -14,8 +14,8 @@ export default function Inventory() {
   const [qty, setQty] = useState("1");
   const user = getUser(); const shop = getShop(); const tc = shop.theme_color||"#D50036";
 
-  const load = () => apiFetch("/ingredients").then(d => setItems(d||[]));
-  useEffect(load,[]);
+  const load = () => { apiFetch("/ingredients").then(d => setItems(d||[])); };
+  useEffect(() => { load(); }, []);
 
   const cats = ["All",...new Set(items.map(i=>i.category).filter(Boolean))];
   const filtered = items.filter(i => i.name.toLowerCase().includes(search.toLowerCase()) && (cat==="All"||i.category===cat));
