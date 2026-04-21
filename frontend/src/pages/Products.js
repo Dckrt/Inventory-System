@@ -14,7 +14,7 @@ export default function Products() {
   const user = getUser(); const shop = getShop(); const tc = shop.theme_color||"#D50036";
 
   const load = () => { apiFetch("/products").then(d=>setProducts(d||[])); apiFetch("/ingredients").then(d=>setIngredients(d||[])); };
-  useEffect(load,[]);
+  useEffect(() => { load(); }, []);
 
   const openAdd = () => { setForm({name:"",price:"",category:"Drinks"}); setRecipe([]); setModal("add"); };
   const openEdit = async p => {

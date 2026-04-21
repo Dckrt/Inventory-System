@@ -10,8 +10,8 @@ export default function Users() {
   const [form, setForm] = useState({username:"",password:"",role:"staff"});
   const shop = getShop(); const me = getUser(); const tc = shop.theme_color||"#D50036";
 
-  const load = () => apiFetch("/users").then(d=>setUsers(d||[]));
-  useEffect(load,[]);
+  const load = () => { apiFetch("/users").then(d=>setUsers(d||[])); };
+  useEffect(() => { load(); }, []);
 
   const add = async () => {
     if (!form.username||!form.password) return alert("Fill in all fields.");
