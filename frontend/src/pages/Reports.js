@@ -32,7 +32,10 @@ export default function Reports() {
       <div style={{display:"grid",gridTemplateColumns:"1.5fr 1fr",gap:"18px",marginBottom:"18px"}}>
         {/* Bar chart */}
         <div style={{background:"#13131A",border:"1px solid #ffffff0f",borderRadius:"13px",padding:"20px"}}>
-          <h3 style={{color:"#fff",margin:"0 0 16px",fontSize:"14px"}}>📈 Daily Revenue (Last 30 Days)</h3>
+          <h3 style={{color:"#fff",margin:"0 0 16px",fontSize:"14px",display:"flex",alignItems:"center",gap:"7px"}}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#22cc77" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>
+            Daily Revenue (Last 30 Days)
+          </h3>
           {!daily.length && <p style={{color:"#556",fontSize:"12px"}}>No data yet.</p>}
           <div style={{display:"flex",alignItems:"flex-end",gap:"3px",height:"180px"}}>
             {daily.slice().reverse().slice(0,20).map((d,i)=>{
@@ -49,7 +52,10 @@ export default function Reports() {
 
         {/* Top products */}
         <div style={{background:"#13131A",border:"1px solid #ffffff0f",borderRadius:"13px",padding:"20px"}}>
-          <h3 style={{color:"#fff",margin:"0 0 16px",fontSize:"14px"}}>🏆 Top Products</h3>
+          <h3 style={{color:"#fff",margin:"0 0 16px",fontSize:"14px",display:"flex",alignItems:"center",gap:"7px"}}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            Top Products
+          </h3>
           {!top.length && <p style={{color:"#556",fontSize:"12px"}}>No sales yet.</p>}
           {top.map((p,i)=>(
             <div key={i} style={{marginBottom:"13px"}}>
@@ -67,7 +73,7 @@ export default function Reports() {
 
       {/* Daily table */}
       <div style={{background:"#13131A",border:"1px solid #ffffff0f",borderRadius:"13px",overflow:"hidden"}}>
-        <div style={{padding:"14px 18px",borderBottom:"1px solid #ffffff0f"}}><h3 style={{color:"#fff",margin:0,fontSize:"14px"}}>📅 Daily Breakdown</h3></div>
+        <div style={{padding:"14px 18px",borderBottom:"1px solid #ffffff0f"}}><h3 style={{color:"#fff",margin:0,fontSize:"14px",display:"flex",alignItems:"center",gap:"7px"}}><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8888ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Daily Breakdown</h3></div>
         <table style={{width:"100%",borderCollapse:"collapse"}}>
           <thead><tr style={{borderBottom:"1px solid #ffffff0f"}}>
             {["Date","Transactions","Revenue","Avg/TX","Discount"].map(h=><th key={h} style={{padding:"11px 14px",color:"#8888aa",fontSize:"11px",letterSpacing:".8px",textAlign:"left",fontWeight:"500"}}>{h}</th>)}

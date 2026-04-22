@@ -2,14 +2,37 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getUser, getShop } from "../services/api";
 
+// SVG icon components — clean, professional
+const Icon = ({ d, size = 18 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
+    {Array.isArray(d) ? d.map((p,i) => <path key={i} d={p}/>) : <path d={d}/>}
+  </svg>
+);
+
+const ICONS = {
+  dashboard: ["M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z","M9 22V12h6v10"],
+  pos:       ["M3 3h18","M3 9h18","M9 3v18","M15 3v6","M3 15h6","M3 21h6","M15 15h6","M15 21h6","M15 15v6"],
+  inventory: ["M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z","M16 3H8a2 2 0 00-2 2v2h12V5a2 2 0 00-2-2z","M12 12v5","M9.5 12v5","M14.5 12v5"],
+  products:  ["M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"],
+  sales:     ["M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z","M14 2v6h6","M16 13H8","M16 17H8","M10 9H8"],
+  reports:   ["M18 20V10","M12 20V4","M6 20v-6"],
+  users:     ["M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2","M9 11a4 4 0 100-8 4 4 0 000 8z","M23 21v-2a4 4 0 00-3-3.87","M16 3.13a4 4 0 010 7.75"],
+  logout:    ["M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4","M16 17l5-5-5-5","M21 12H9"],
+  collapse:  "M15 18l-6-6 6-6",
+  expand:    "M9 18l6-6-6-6",
+  bubble:    ["M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z","M8 12h8","M12 8v8"],
+};
+
+const NavIcon = ({ name, size }) => <Icon d={ICONS[name] || ICONS.dashboard} size={size}/>;
+
 const NAV = [
-  { path:"/dashboard", icon:"🧋", label:"Dashboard", roles:["admin","staff"] },
-  { path:"/pos",       icon:"💳", label:"POS",       roles:["admin","staff"] },
-  { path:"/inventory", icon:"📦", label:"Inventory", roles:["admin","staff"] },
-  { path:"/products",  icon:"🍵", label:"Products",  roles:["admin","staff"] },
-  { path:"/sales",     icon:"📋", label:"Sales",     roles:["admin","staff"] },
-  { path:"/reports",   icon:"📊", label:"Reports",   roles:["admin"] },
-  { path:"/users",     icon:"👥", label:"Users",     roles:["admin"] },
+  { path:"/dashboard", icon:"dashboard", label:"Dashboard", roles:["admin","staff"] },
+  { path:"/pos",       icon:"pos",       label:"POS",       roles:["admin","staff"] },
+  { path:"/inventory", icon:"inventory", label:"Inventory", roles:["admin","staff"] },
+  { path:"/products",  icon:"products",  label:"Products",  roles:["admin","staff"] },
+  { path:"/sales",     icon:"sales",     label:"Sales",     roles:["admin","staff"] },
+  { path:"/reports",   icon:"reports",   label:"Reports",   roles:["admin"] },
+  { path:"/users",     icon:"users",     label:"Users",     roles:["admin"] },
 ];
 
 export default function Layout({ children, title }) {
@@ -35,10 +58,22 @@ export default function Layout({ children, title }) {
 
         {/* Logo */}
         <div onClick={()=>setCol(!col)} style={{padding:"22px 14px 18px",borderBottom:`1px solid ${tc}22`,display:"flex",alignItems:"center",gap:"10px",cursor:"pointer"}}>
-          <div style={{width:"36px",height:"36px",background:`linear-gradient(135deg,${tc},${tc}88)`,borderRadius:"11px",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"17px",flexShrink:0,boxShadow:`0 4px 14px ${tc}44`}}>🧋</div>
+          <div style={{width:"36px",height:"36px",background:`linear-gradient(135deg,${tc},${tc}88)`,borderRadius:"11px",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,boxShadow:`0 4px 14px ${tc}44`,color:"#fff"}}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M8 3H7a2 2 0 00-2 2v5a6 6 0 0012 0V5a2 2 0 00-2-2h-1"/>
+              <path d="M8 3V2M16 3V2"/>
+              <path d="M7 15c0 3.314 2.239 6 5 6s5-2.686 5-6"/>
+              <path d="M17 7h2a2 2 0 012 2v1a2 2 0 01-2 2h-2"/>
+            </svg>
+          </div>
           {!col && <div>
             <div style={{color:"#fff",fontWeight:"700",fontSize:"13px",lineHeight:"1.2"}}>{shop.logo_text||"MilkTea"}</div>
             <div style={{color:tc,fontSize:"10px",letterSpacing:"1px",textTransform:"uppercase"}}>Inventory</div>
+          </div>}
+          {!col && <div style={{marginLeft:"auto",color:"#8888aa"}}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d={col ? "M9 18l6-6-6-6" : "M15 18l-6-6 6-6"}/>
+            </svg>
           </div>}
         </div>
 
@@ -52,7 +87,7 @@ export default function Layout({ children, title }) {
                   onMouseEnter={e=>!active&&(e.currentTarget.style.background="#ffffff0a")}
                   onMouseLeave={e=>!active&&(e.currentTarget.style.background="transparent")}
                 >
-                  <span style={{fontSize:"17px",flexShrink:0}}>{item.icon}</span>
+                  <NavIcon name={item.icon} size={17}/>
                   {!col && item.label}
                 </div>
               </Link>
@@ -67,7 +102,8 @@ export default function Layout({ children, title }) {
             <div style={{color:tc,fontSize:"10px",textTransform:"capitalize",letterSpacing:".5px"}}>{user.role} • {shop.name}</div>
           </div>}
           <button onClick={logout} style={{width:"100%",padding:"9px",background:"#ff4b4b18",color:"#ff6b6b",border:"1px solid #ff4b4b33",borderRadius:"9px",cursor:"pointer",fontSize:"12px",display:"flex",alignItems:"center",justifyContent:col?"center":"flex-start",gap:"7px"}}>
-            <span>🚪</span>{!col && "Logout"}
+            <NavIcon name="logout" size={15}/>
+            {!col && "Logout"}
           </button>
         </div>
       </aside>
